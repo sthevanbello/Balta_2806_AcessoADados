@@ -22,17 +22,12 @@ namespace DataAccess
             //connection.Close();
             using (var connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                using (var command = new SqlCommand())
+                var sql = "SELECT [Id], [Title] FROM [Category]";
+
+                var categories = connection.Query<Category>(sql);
+                foreach (var category in categories)
                 {
-                    command.Connection = connection;
-                    command.CommandType = System.Data.CommandType.Text;
-                    command.CommandText = "SELECT [Id], [Title] FROM [Category]";
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        Console.WriteLine($"{reader.GetGuid(0)} - {reader.GetString(1)}");
-                    }
+                    Console.WriteLine($"Id: {category.Id} - Title: {category.Title}");
                 }
             }
         }
