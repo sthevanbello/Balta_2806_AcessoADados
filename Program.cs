@@ -1,4 +1,6 @@
 ﻿using System;
+using Dapper;
+using DataAccess.Models;
 using Microsoft.Data.SqlClient;
 
 namespace DataAccess
@@ -20,7 +22,13 @@ namespace DataAccess
             //connection.Close();
             using (var connection = new SqlConnection(connectionString))
             {
-                
+                var sql = "SELECT [Id], [Title] FROM [Category]";
+
+                var categories = connection.Query<Category>(sql);
+                foreach (var category in categories)
+                {
+                    Console.WriteLine($"Id: {category.Id} - Title: {category.Title}");
+                }
             }
         }
     }
